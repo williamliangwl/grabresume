@@ -5,6 +5,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var customCors = require('./custom-cors');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -36,6 +37,7 @@ app.use( session({
   }
 }));
 
+app.all('/*', customCors.cors);
 app.use('/api', index);
 app.use('/api/users', users);
 app.use('/api/resumes', resumes);

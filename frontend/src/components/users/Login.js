@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import RequestWrapper from '../../wrappers/requestWrapper';
 
 class Login extends Component {
 
@@ -21,7 +22,10 @@ class Login extends Component {
   }
 
   login() {
-  
+    var query = this.state;
+    RequestWrapper.postRequest('users/login', query, function(response){
+      console.log(response);
+    });
   }
 
   render() {
