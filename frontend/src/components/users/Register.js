@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import UserRequestWrapper from '../../wrappers/requests/UserRequestWrapper';
 
-class Login extends Component {
+class Register extends Component {
 
   constructor() {
     super();
@@ -21,9 +21,9 @@ class Login extends Component {
     });
   }
 
-  login() {
+  register() {
     var query = this.state;
-    UserRequestWrapper.postLogin(query, function(response){
+    UserRequestWrapper.postRegister(query, function(response){
       
     });
   }
@@ -31,17 +31,17 @@ class Login extends Component {
   render() {
     return (
       <div className="col-md-3">
-        <h3>Login</h3>
+        <h3>Register</h3>
         <div className="form-group">
           <input type="text" className="form-control" placeholder="Username" name="username" onChange={this.updateState.bind(this)} />
         </div>
         <div className="form-group">
           <input type="password" className="form-control" placeholder="Password" name="password" onChange={this.updateState.bind(this)} />
         </div>
-        <button className="btn btn-primary" onClick={this.login.bind(this)} >Login</button>
+        <button className="btn btn-primary" onClick={this.register.bind(this)} >Register</button>
       </div>
     )
   }
 }
 
-export default Login;
+export default Register;

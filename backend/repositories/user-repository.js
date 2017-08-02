@@ -1,7 +1,7 @@
 var User = require('../models/user'); 
 
 var users = [
-    new User(1, 'admin', 'admin')
+    new User(1, 'admin', 'admin', true)
 ];
 
 var UserRepository = {};
@@ -14,7 +14,8 @@ UserRepository.authenticate = function(username, password) {
         if (user.isMatch(username, password)) {
             userData = {
                 'id': user.getId(),
-                'username': user.getUsername()
+                'username': user.getUsername(),
+                'isAdmin': user.getIsAdmin()
             };
             break;
         }
@@ -35,7 +36,7 @@ UserRepository.register = function(username, password) {
     }
 
     if (!registered) {
-        users.push(new User(users.length + 1, username, password));
+        users.push(new User(users.length + 1, username, password, false));
     }
 
     return !registered;

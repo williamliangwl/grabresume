@@ -1,31 +1,35 @@
 
-var User = function(id, username, password){
-    this._id = id;
-    this._username = username;
-    this._password = password;
+var User = function(id, username, password, isAdmin){
+    this.id = id;
+    this.username = username;
+    this.password = password;
+    this.isAdmin = isAdmin;
+    this.resumeIds = [];
 };
 
-User.prototype._resumeIds = [];
-
 User.prototype.isMatch = function(username, password) {
-    return this._username === username
-        && this._password === password;
+    return this.username === username
+        && this.password === password;
 };
 
 User.prototype.getId = function() {
-    return this._id;
+    return this.id;
 };
 
 User.prototype.getUsername = function() {
-    return this._username;  
+    return this.username;  
 };
 
+User.prototype.getIsAdmin = function() {
+    return this.isAdmin;
+}
+
 User.prototype.addResumeId = function(resumeId) {
-    this._resumeIds.push(resumeId);
+    this.resumeIds.push(resumeId);
 };
 
 User.prototype.getAllResumeIds = function() {
-    return this._resumeIds;
+    return this.resumeIds;
 };
 
 module.exports = User;

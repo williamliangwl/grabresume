@@ -13,9 +13,9 @@ router.get('/', Auth.isAuthenticated, function(req, res, next) {
 });
 
 router.get('/getResume/:resumeId', function(req, res, next) {
-    var resumeId = req.params.resumeId;
-    var resume = ResumeController.getResume(resumeId);
-    res.send(JSON.stringify(resume));
+  var resumeId = req.params.resumeId;
+  var resume = ResumeController.getResume(resumeId);
+  res.send(JSON.stringify(resume));
 });
 
 router.post('/uploadResumeDetails', Auth.isAuthenticated, function(req, res, next){

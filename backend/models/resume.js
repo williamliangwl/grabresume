@@ -1,20 +1,20 @@
 
 var Resume = function(id, jobTitle, jobDesc, company) {
-    this._id = id;
-    this._jobTitle = jobTitle;
-    this._jobDesc = jobDesc;
-    this._company = company;
+    this.id = id;
+    this.jobTitle = jobTitle;
+    this.jobDesc = jobDesc;
+    this.company = company;
 }
 
 Resume.prototype.isAnyMatch = function(id, jobTitle, jobDesc, company) {
-    return this._id === id
-        || this._jobTitle === jobTitle
-        || this._jobDesc === jobDesc
-        || this._company === company;
+    return this.id === id
+        || this.jobTitle === jobTitle
+        || this.jobDesc === jobDesc
+        || this.company === company;
 };
 
 Resume.prototype.getId = function() {
-    return this._id;
+    return this.id;
 }
 
 module.exports = Resume;
