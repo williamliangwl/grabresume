@@ -11,7 +11,7 @@ ResumeController.addResume = function(user, jobTitle, jobDesc, company) {
 ResumeController.getAllUserResumes = function(user) {
     var resumes = [];
     var resumeIds = user.getAllResumeIds();
-    console.log(user, resumeIds);
+    
     for (var i = 0; i < resumeIds.length; i++) {
         var resumeId = resumeIds[i];
         var resume = ResumeRepository.getResume(resumeId);

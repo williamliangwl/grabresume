@@ -6,7 +6,7 @@ var resumes = [];
 var ResumeRepository = {};
 
 ResumeRepository.addResume = function(jobTitle, jobDesc, company) {
-    var id = resumes.length;
+    var id = resumes.length + 1;
     var resume = new Resume(id, jobTitle, jobDesc, company);
     resumes.push(resume);
     return resume.getId();

@@ -1,32 +1,33 @@
 import React, { Component } from 'react';
+
+import AddResume from './resumes/AddResume';
+import ShowResumes from './resumes/ShowResumes';
+
 import ResumeRequestWrapper from '../wrappers/requests/ResumeRequestWrapper';
 
 class Resumes extends Component {
-  
-  reloadResume() {
-    ResumeRequestWrapper.getResumes(function(response){
-      console.log(response);
-    }); 
-  }
 
-  addResume() {
-    var resume = {
-      'jobDesc': 'admin',
-      'company': 'Quintiq',
-      'jobTitle': 'admin'
+  constructor() {
+    super();
+    this.state = {
+      resumes : []
     };
 
-    ResumeRequestWrapper.addResume(resume);
+    this.reloadResume = this.reloadResume.bind(this);
+    this.reloadResume();
+  }
+
+  reloadResume() {
+    ResumeRequestWrapper.getResumes((response) => {
+      this.setState({ resumes: response.data });
+    }); 
   }
 
   render() {
     return (
-      <div className="row" >
-        <div className="col-md-3">
-          <h3>Resumes</h3>
-          <button className="btn btn-primary" onClick={this.addResume.bind(this)} >Add</button>
-          <button className="btn btn-primary" onClick={this.reloadResume.bind(this)} >Reload</button>
-        </div>
+      <div>
+        <AddResume onSuccessAdd={this.reloadResume} />
+        <ShowResumes resumes={this.state.resumes} />
       </div>
     )
   }
