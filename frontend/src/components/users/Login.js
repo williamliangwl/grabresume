@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+
+import history from '../History';
+
 import UserRequestWrapper from '../../wrappers/requests/UserRequestWrapper';
 
 class Login extends Component {
@@ -24,7 +27,7 @@ class Login extends Component {
   login() {
     var query = this.state;
     UserRequestWrapper.postLogin(query, function(response){
-      
+      history.push("/resumes");
     });
   }
 

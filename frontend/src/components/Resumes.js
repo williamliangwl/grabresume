@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ResumeRequestWrapper from '../../wrappers/requests/ResumeRequestWrapper';
+import ResumeRequestWrapper from '../wrappers/requests/ResumeRequestWrapper';
 
 class Resumes extends Component {
   
