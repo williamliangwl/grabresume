@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Router } from 'react-router';
-import { Route } from 'react-router-dom';
+import { Route, Router } from 'react-router-dom';
 
 import history from './History';
 
@@ -14,8 +13,8 @@ class App extends Component {
       <Router history={history} >
         <div>
           <Header />
-          <Route exact path="/" component={Users} ></Route>
-          <Route path="/resumes" component={Resumes} ></Route>
+          <Route exact path="/" component={Users} />
+          <Route path="/resumes" component={Resumes} />
         </div>
       </Router>
     );

@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import AddResume from './resumes/AddResume';
 import ShowResumes from './resumes/ShowResumes';
 
+import { IfAuthenticated } from './middlewares/Authentication';
+
 import ResumeRequestWrapper from '../wrappers/requests/ResumeRequestWrapper';
 
 class Resumes extends Component {
@@ -14,7 +16,10 @@ class Resumes extends Component {
     };
 
     this.reloadResume = this.reloadResume.bind(this);
-    this.reloadResume();
+  }
+
+  componentWillMount() {
+    IfAuthenticated(this.reloadResume);
   }
 
   reloadResume() {

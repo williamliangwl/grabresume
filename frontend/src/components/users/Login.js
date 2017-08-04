@@ -27,7 +27,8 @@ class Login extends Component {
   login() {
     var query = this.state;
     UserRequestWrapper.postLogin(query, function(response){
-      history.push("/resumes");
+      if( response.data )
+        history.push("/resumes");
     });
   }
 

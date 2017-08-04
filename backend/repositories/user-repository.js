@@ -6,7 +6,7 @@ var users = [
 
 var UserRepository = {};
 
-UserRepository.authenticate = function(username, password) {
+UserRepository.getUserByUsernamePassword = function(username, password) {
     var userData = {};
 
     for (var i = 0; i < users.length; i++) {
@@ -21,7 +21,7 @@ UserRepository.authenticate = function(username, password) {
         }
     }
 
-    return userData;
+    return userData? userData: false;
 };
 
 UserRepository.register = function(username, password) {

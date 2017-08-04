@@ -27,4 +27,8 @@ router.post('/register', function(req, res, next) {
   res.send(result);
 });
 
+router.post('/pingUserSession', function(req, res, next){
+  res.send(UserController.getUser(req.session.userid));
+});
+
 module.exports = router;
