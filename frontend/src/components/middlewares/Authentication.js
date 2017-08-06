@@ -1,16 +1,14 @@
 
-import history from '../History';
+import history from '../../History';
 
-import UserRequestWrapper from '../../wrappers/requests/UserRequestWrapper';
+import UserStore from '../../stores/UserStore';
 
 export function IfAuthenticated(next) {
-  UserRequestWrapper.postPingUseSession((response) => {
-    var isalive = response.data;
-    if (isalive) {
-      next();
-    }
-    else {
-      history.replace('/');
-    }
-  });
+  var user = UserStore.getUser();
+  if (user) {
+    next();
+  }
+  else {
+    history.replace('/');
+  }
 };

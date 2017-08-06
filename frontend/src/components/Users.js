@@ -5,7 +5,7 @@ import Register from './users/Register';
 class Users extends Component {
   render() {
     return (
-      <div className="row" >
+      <div>
         <Login />
         <Register />
       </div>

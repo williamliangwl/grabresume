@@ -1,5 +1,6 @@
 var UserController = require('../controllers/user-controller');
 var express = require('express');
+var Auth = require('./auth-middleware');
 var router = express.Router();
 
 /* GET users listing. */
@@ -29,6 +30,11 @@ router.post('/register', function(req, res, next) {
 
 router.post('/pingUserSession', function(req, res, next){
   res.send(UserController.getUser(req.session.userid));
+});
+
+router.post('/logout', Auth.isAuthenticated, function(req, res, next){
+  req.session.destroy();
+  res.send(true);
 });
 
 module.exports = router;

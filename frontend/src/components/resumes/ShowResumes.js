@@ -8,26 +8,29 @@ class ShowResume extends Component {
       resumes: this.props.resumes
     };
     
-    this.filterResumes = this.filterResumes.bind(this);
+    this.onFilter = this.props.onFilter;
+    this.onItemClick = this.props.onItemClick;
+    this.applyFilter = this.applyFilter.bind(this);
   }
 
-  filterResumes(e) {
+  applyFilter(e) {
     var query = e.target.value;
-    var filteredResumes = this.props.resumes.filter((resume) =>{
-      return resume.id === query
-    });
+    if (this.onFilter) {
+      this.onFilter(query);
+    }
   }
 
   parseResumeObjects(resumes) {
     var resumeList = [];
     
-    if(resumes) {
+    if (resumes) {
       resumeList = resumes.map( resume => {
         return <tr key={resume.id} >
                 <td>{resume.id}</td>
                 <td>{resume.jobDesc}</td>
                 <td>{resume.jobTitle}</td>
                 <td>{resume.company}</td>
+                <td>{this.onItemClick? <button className='btn btn-primary' onClick={() => this.onItemClick(resume)} >Details</button> :'' }</td>
               </tr>;
       });
     }
@@ -40,7 +43,7 @@ class ShowResume extends Component {
       <div className="row">
         <div className="col-md-12">
           <h3>Resume Lists</h3>
-          <input type="text" className="form-control" placeholder="Filter" onChange={this.filterResumes} />
+          <input type="text" className="form-control" placeholder="Filter" onChange={this.applyFilter} />
           <br/>
           <table className="table">
             <thead>

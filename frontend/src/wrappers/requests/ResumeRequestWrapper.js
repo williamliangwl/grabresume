@@ -14,6 +14,11 @@ class ResumeRequestWrapper extends BaseRequestWrapper {
     var url = this.resumeApiUrl + 'uploadResumeDetails';
     this.postRequest(url, query, onsuccess_cb, onerror_cb);
   }
+
+  static getResume(query, onsuccess_cb, onerror_cb) {
+    var url = this.resumeApiUrl + 'getResume/' + query;
+    this.getRequest(url, onsuccess_cb, onerror_cb );
+  }
 }
 
 export default ResumeRequestWrapper;

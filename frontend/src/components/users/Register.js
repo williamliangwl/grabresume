@@ -30,15 +30,17 @@ class Register extends Component {
 
   render() {
     return (
-      <div className="col-md-3">
-        <h3>Register</h3>
-        <div className="form-group">
-          <input type="text" className="form-control" placeholder="Username" name="username" onChange={this.updateState.bind(this)} />
+      <div className="row">
+        <div className="col-md-3">
+          <h3>Register</h3>
+          <div className="form-group">
+            <input type="text" className="form-control" placeholder="Username" name="username" onChange={this.updateState.bind(this)} />
+          </div>
+          <div className="form-group">
+            <input type="password" className="form-control" placeholder="Password" name="password" onChange={this.updateState.bind(this)} />
+          </div>
+          <button className="btn btn-primary" onClick={this.register.bind(this)} >Register</button>
         </div>
-        <div className="form-group">
-          <input type="password" className="form-control" placeholder="Password" name="password" onChange={this.updateState.bind(this)} />
-        </div>
-        <button className="btn btn-primary" onClick={this.register.bind(this)} >Register</button>
       </div>
     )
   }

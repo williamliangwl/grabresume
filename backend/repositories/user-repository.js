@@ -7,7 +7,7 @@ var users = [
 var UserRepository = {};
 
 UserRepository.getUserByUsernamePassword = function(username, password) {
-    var userData = {};
+    var userData = null;
 
     for (var i = 0; i < users.length; i++) {
         var user = users[i];

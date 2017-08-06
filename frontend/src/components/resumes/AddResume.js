@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import ResumeRequestWrapper from '../../wrappers/requests/ResumeRequestWrapper';
+
+import ResumeActions from '../../actions/ResumeActions';
 
 class AddResume extends Component {
 
@@ -10,8 +11,6 @@ class AddResume extends Component {
       jobTitle: '',
       company: ''
     };
-
-    this.onSuccessAdd = this.props.onSuccessAdd;
   }
 
   updateState(e) {
@@ -26,10 +25,7 @@ class AddResume extends Component {
 
   addResume() {
     var resumeData = this.state;
-
-    ResumeRequestWrapper.addResume(resumeData, response => {
-      this.onSuccessAdd();
-    });
+    ResumeActions.addResume(resumeData);
   }
 
   render() {
