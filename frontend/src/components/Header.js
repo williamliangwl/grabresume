@@ -10,16 +10,24 @@ class Header extends Component {
     this.state = {
       user: {}
     };
+
+    this.updateUser = this.updateUser.bind(this);
   }
 
   componentWillMount() {
-    UserStore.on('change', () => {
-      this.setState({
-        user: UserStore.getUser()
-      });
-    });
+    UserStore.on('change', this.updateUser);
 
     UserActions.pingUser();
+  }
+
+  componentWillUnmount() {
+    UserStore.removeListener('change', this.updateUser);
+  }
+
+  updateUser() {
+    this.setState({
+      user: UserStore.getUser()
+    });
   }
 
   logout() {
