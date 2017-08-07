@@ -1,35 +1,61 @@
-import Dispatcher from '../Dispatcher';
-
 import ResumeRequestWrapper from '../wrappers/requests/ResumeRequestWrapper';
 
 class ResumeActions {
 
   addResume(resume) {
-    ResumeRequestWrapper.addResume(resume, response => {
-      if (response.data) {
-        this.reloadResume();
-      }
-    });
+    return (dispatch) => {
+      ResumeRequestWrapper.addResume(resume, response => {
+        var data = response.data;
+        if (data && data.resumeId) {
+          dispatch(this.reloadResume());
+        }
+        else {
+          dispatch({
+            type: 'RESUME_FAILED_ADD',
+            payload: data.message
+          })
+        }
+      });
+    }
   }
 
-  filterResume(query, isAdmin) {
-    Dispatcher.dispatch({
-      type: 'RESUME_FILTER',
-      query,
-      isAdmin
-    });
+  getResume(resumeId) {
+    return (dispatch) => {
+      ResumeRequestWrapper.getResume(resumeId, (response) => {
+        if (response.data) {
+          var resume = response.data;
+          dispatch({
+            type: 'RESUME_DETAIL_SET',
+            payload: resume
+          });
+        }
+      });
+    }
+  }
+
+  filterResume(query) {
+    return (dispatch) => {
+      dispatch({
+        type: 'RESUME_FILTER',
+        payload: query
+      });
+    }
   }
 
   reloadResume() {
-    ResumeRequestWrapper.getResumes((response) => {
-      if (response.data) {
-        var resumes = response.data;
-        Dispatcher.dispatch({
-          type: 'RESUME_RELOAD',
-          resumes
-        })
-      }      
-    }); 
+    return (dispatch) => {
+      ResumeRequestWrapper.getResumes((response) => {
+        if (response.data) {
+          var resumes = response.data;
+          if (resumes) {
+            dispatch({
+              type: 'RESUME_RELOAD',
+              payload: resumes
+            })
+          }
+        }      
+      }); 
+    }
   }
 }
 

@@ -1,34 +1,19 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-import ResumeRequestWrapper from '../wrappers/requests/ResumeRequestWrapper';
+import ResumeActions from '../actions/ResumeActions';
 
 class ResumeDetail extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      id: -1,
-      jobTitle: '',
-      jobDesc: '',
-      company: ''
-    };
 
     this.requestResumeDetail(this.props.match.params.resumeId);
   }
 
   requestResumeDetail(resumeId) {
-    ResumeRequestWrapper.getResume(resumeId, (response) => {
-      if (response.data) {
-        var resume = response.data;
-        this.setState({
-          id: resume.id,
-          jobTitle: resume.jobTitle,
-          jobDesc: resume.jobDesc,
-          company: resume.company
-        });
-      }
-    });
+    this.props.dispatch(ResumeActions.getResume(resumeId));
   }
 
   render() {
@@ -46,7 +31,7 @@ class ResumeDetail extends Component {
                   <b>ID</b>
                 </td>
                 <td>
-                  {this.state.id}
+                  {this.props.resumeDetail.id}
                 </td>
               </tr>
               <tr>
@@ -54,7 +39,7 @@ class ResumeDetail extends Component {
                   <b>Job Title</b>
                 </td>
                 <td>
-                  {this.state.jobTitle}
+                  {this.props.resumeDetail.jobTitle}
                 </td>
               </tr>
               <tr>
@@ -62,7 +47,7 @@ class ResumeDetail extends Component {
                   <b>Company</b>
                 </td>
                 <td>
-                  {this.state.company}
+                  {this.props.resumeDetail.company}
                 </td>
               </tr>
               <tr>
@@ -70,7 +55,7 @@ class ResumeDetail extends Component {
                   <b>Job Description</b>
                 </td>
                 <td>
-                  {this.state.jobDesc}
+                  {this.props.resumeDetail.jobDesc}
                 </td>
               </tr>
             </tbody>
@@ -81,4 +66,10 @@ class ResumeDetail extends Component {
   }
 }
 
-export default ResumeDetail;
+export default connect(
+  (store) => {
+    return {
+      resumeDetail: store.resumes.resumeDetail
+    };
+  }
+)(ResumeDetail);

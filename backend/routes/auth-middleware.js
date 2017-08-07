@@ -2,7 +2,7 @@ var Auth = {};
 
 Auth.isAuthenticated = function( req, res, next ){
     if( !req.session.userid ) {
-        res.send('Not authenticated');
+        res.send(false);
     }
     else {
         next();

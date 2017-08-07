@@ -32,4 +32,12 @@ User.prototype.getAllResumeIds = function() {
     return this.resumeIds;
 };
 
+User.prototype.getData = function() {
+    return {
+        'id': this.getId(),
+        'username': this.getUsername(),
+        'isAdmin': this.getIsAdmin()
+    }
+}
+
 module.exports = User;

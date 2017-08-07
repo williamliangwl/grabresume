@@ -1,61 +1,29 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import AddResume from './resumes/AddResume';
 import ShowResumes from './resumes/ShowResumes';
 
 import history from '../History';
-import { IfAuthenticated } from './middlewares/Authentication';
 
 import ResumeActions from '../actions/ResumeActions';
-import UserActions from '../actions/UserActions';
-
-import ResumeStore from '../stores/ResumeStore';
-import UserStore from '../stores/UserStore';
 
 class Resumes extends Component {
 
-  constructor() {
-    super();
-    this.state = {
-      resumes: []
-    };
+  constructor(props) {
+    super(props);
 
-    this.updateResumes = this.updateResumes.bind(this);
     this.filterResume = this.filterResume.bind(this);
     this.showResumeDetail = this.showResumeDetail.bind(this);
-    this.checkAuthentication = this.checkAuthentication.bind(this);
   }
 
   componentWillMount() {
-    UserStore.on('change', this.checkAuthentication);
-    UserActions.pingUser();
-  }
-
-  componentWillUnmount() {
-    ResumeStore.removeListener('change', this.updateResumes);
-    UserStore.removeListener('change', this.checkAuthentication);
-  }
-
-  checkAuthentication() {
-    IfAuthenticated(() => {
-      ResumeStore.on('change', this.updateResumes);
-      ResumeActions.reloadResume();
-    });
-  }
-
-  updateResumes() {
-    var resumes = ResumeStore.getAllResumes();
-
-    this.setState({ 
-      resumes
-    });
+    this.props.dispatch(ResumeActions.reloadResume());
   }
 
   filterResume(query) {
-    var user = UserStore.getUser();
-    var isAdmin = user? user.isAdmin: false;
-
-    ResumeActions.filterResume(query, isAdmin);
+    this.props.dispatch(ResumeActions.filterResume(query));
   }
 
   showResumeDetail(resume) {
@@ -63,13 +31,38 @@ class Resumes extends Component {
   }
 
   render() {
-    return (
-      <div>
-        <AddResume />
-        <ShowResumes resumes={this.state.resumes} onFilter={this.filterResume} onItemClick={this.showResumeDetail} />
-      </div>
-    )
+    var content = !this.props.user?
+                  (<h4>Please <Link to="/">login</Link> first</h4>):
+                  (<div>
+                    <AddResume />
+                    <br/>
+                    <ShowResumes resumes={this.props.resumes} onFilter={this.filterResume} onItemClick={this.showResumeDetail} />
+                  </div>);
+
+    return content;
   }
 }
 
-export default Resumes;
+export default connect(
+  (store) => {
+    var filteredResumes = store.resumes.resumes.filter((resume) => {
+      var query = store.resumes.filterQuery;
+      var isAdmin = store.user.user? store.user.user.isAdmin: false;
+
+      var isValidAdminSearch = isAdmin
+                                && ( resume.jobDesc.indexOf(query) !== -1
+                                      || resume.company.indexOf(query) !== -1
+                                      || resume.jobTitle.indexOf(query) !== -1
+                                );
+
+      return !query 
+        || resume.id === parseInt(query, 10)
+        || isValidAdminSearch;
+    });
+
+    return {
+      user: store.user.user,
+      resumes: filteredResumes
+    }
+  }
+)(Resumes);

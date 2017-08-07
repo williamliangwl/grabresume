@@ -1,5 +1,3 @@
-import Dispatcher from '../Dispatcher';
-
 import history from '../History';
 
 import UserRequestWrapper from '../wrappers/requests/UserRequestWrapper';
@@ -7,46 +5,95 @@ import UserRequestWrapper from '../wrappers/requests/UserRequestWrapper';
 class UserActions {
 
   login(username, password) {
-    var query = {
-      username,
-      password
-    };
+    return (dispatch) => {
+      var query = {
+        username,
+        password
+      };
 
-    UserRequestWrapper.postLogin(query, response => {
-      var user = response.data;
-      if(user) {
-        Dispatcher.dispatch({
-          type: 'USER_RELOAD',
-          user
-        });
-        
-        history.push('/resumes');
-      }
-    });
+      UserRequestWrapper.postLogin(query, response => {
+        var data = response.data;
+        if (data) {
+          if (data.user) {
+            dispatch({
+              type: 'USER_SET',
+              payload: data.user
+            });
+            
+            history.push('/resumes');
+          }
+          else {
+            dispatch({
+              type: 'USER_SET_FAILED',
+              payload: data.message
+            });
+          }
+        }
+      });
+    }
+  }
+
+  register(user) {
+    return (dispatch) => {
+      UserRequestWrapper.postRegister(user, function(response){
+        var data = response.data;
+        if (data) {
+
+          if (data.user) {
+            dispatch({
+              type: 'USER_SET',
+              payload: data.user
+            });
+
+            history.push('/resumes');
+          }
+          else {
+            dispatch({
+              type: 'USER_SET_FAILED',
+              payload: data.message
+            });
+          }
+            
+        }
+      });
+    };
   }
 
   logout() {
-    UserRequestWrapper.postLogout((response) => {
-      var user = response.data;
-      if(user) {
-        Dispatcher.dispatch({
-          type: 'USER_RELOAD',
-          user: false
-        });
+    return (dispatch) => {
+      UserRequestWrapper.postLogout((response) => {
+        var data = response.data;
+        if (data) {
+          dispatch({
+            type: 'USER_SET',
+            payload: data.user
+          });
 
-        history.push('/');
-      }
-    });
+          history.push('/');
+        }
+      });
+    }
   }
 
-  pingUser() {
-    UserRequestWrapper.postPingUserSession((response) => {
-      var user = response.data;
-      Dispatcher.dispatch({
-        type: 'USER_RELOAD',
-        user
+  pingUser(callback) {
+    return (dispatch) => {
+      UserRequestWrapper.postPingUserSession((response) => {
+        var data = response.data;
+        dispatch({
+          type: 'USER_SET',
+          payload: data.user,
+          callback
+        });
       });
-    });
+    }
+  }
+
+  clearUser() {
+    return (dispatch) => {
+      dispatch({
+        type: 'USER_CLEAR'
+      });
+    }
   }
   
 }

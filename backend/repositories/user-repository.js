@@ -7,25 +7,17 @@ var users = [
 var UserRepository = {};
 
 UserRepository.getUserByUsernamePassword = function(username, password) {
-    var userData = null;
-
     for (var i = 0; i < users.length; i++) {
         var user = users[i];
         if (user.isMatch(username, password)) {
-            userData = {
-                'id': user.getId(),
-                'username': user.getUsername(),
-                'isAdmin': user.getIsAdmin()
-            };
-            break;
+            return user;
         }
     }
-
-    return userData? userData: false;
 };
 
 UserRepository.register = function(username, password) {
     var registered = false;
+    var newUser = null;
 
     for (var i = 0; i < users.length; i++) {
         var user = users[i];
@@ -36,19 +28,20 @@ UserRepository.register = function(username, password) {
     }
 
     if (!registered) {
-        users.push(new User(users.length + 1, username, password, false));
+        newUser = new User(users.length + 1, username, password, false)
+        users.push(newUser);
     }
 
-    return !registered;
+    return newUser;
 }
 
 UserRepository.getUser = function(userId) {
     for (var i = 0; i < users.length; i++) {
         var user = users[i];
-        if (user.getId() === userId) return user;
+        if (user.getId() === userId) {
+            return user;
+        };
     }
-
-    return null;
 };
 
 module.exports = UserRepository;

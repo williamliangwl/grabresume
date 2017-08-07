@@ -1,46 +1,25 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import UserActions from '../actions/UserActions';
-import UserStore from '../stores/UserStore';
 
 class Header extends Component {
 
-  constructor() {
-    super();
-    this.state = {
-      user: {}
-    };
-
-    this.updateUser = this.updateUser.bind(this);
-  }
-
   componentWillMount() {
-    UserStore.on('change', this.updateUser);
-
-    UserActions.pingUser();
-  }
-
-  componentWillUnmount() {
-    UserStore.removeListener('change', this.updateUser);
-  }
-
-  updateUser() {
-    this.setState({
-      user: UserStore.getUser()
-    });
+    this.props.dispatch(UserActions.pingUser());
   }
 
   logout() {
-    UserActions.logout();
+    this.props.dispatch(UserActions.logout());
   }
 
   render() {
     var greetings = '';
-    if (this.state.user) {
+    if (this.props.user) {
       greetings = ( 
         <div>
           <label>
-            Hi, {this.state.user.username} 
+            Hi, {this.props.user.username} 
             <button type="button" className="btn btn-link" onClick={this.logout.bind(this)} >Sign Out</button>
           </label>
         </div>
@@ -56,4 +35,10 @@ class Header extends Component {
   }
 }
 
-export default Header;
+export default connect(
+  (store) => {
+    return {
+      user: store.user.user
+    };
+  }
+)(Header);

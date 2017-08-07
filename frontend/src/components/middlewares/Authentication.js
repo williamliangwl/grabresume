@@ -1,10 +1,7 @@
 
 import history from '../../History';
 
-import UserStore from '../../stores/UserStore';
-
-export function IfAuthenticated(next) {
-  var user = UserStore.getUser();
+export function IfAuthenticated(user, next) {
   if (user) {
     next();
   }

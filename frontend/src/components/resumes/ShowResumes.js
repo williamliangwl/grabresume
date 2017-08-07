@@ -4,9 +4,6 @@ class ShowResume extends Component {
   
   constructor(props) {
     super(props);
-    this.state = {
-      resumes: this.props.resumes
-    };
     
     this.onFilter = this.props.onFilter;
     this.onItemClick = this.props.onItemClick;

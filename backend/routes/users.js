@@ -11,25 +11,59 @@ router.get('/', function(req, res, next) {
 router.post('/login', function(req, res, next) {
   var username = req.body.username;
   var password = req.body.password;
+  var user = null;
+  var message = '';
 
-  var user = UserController.login(username, password);
-  if (user) {
-    req.session.username = user.username;
-    req.session.userid = user.id;
+  if (username.length === 0 || password.length === 0) {
+    message = 'All fields are required';
   }
-  res.send(user);
+  else {
+    user = UserController.login(username, password);
+
+    if (user) {
+      req.session.username = user.username;
+      req.session.userid = user.id;
+      user = user.getData();
+    }
+    else {
+      message = 'Invalid combination of username and password';
+    }
+  }
+
+  res.send({ user, message });
 });
 
 router.post('/register', function(req, res, next) {
   var username = req.body.username;
   var password = req.body.password;
+  var user = null;
+  var message = '';
 
-  var result = UserController.register(username, password);
-  res.send(result);
+  if (username.length === 0 || password.length === 0) {
+    message = 'All fields are required';
+  }
+  else {
+    user = UserController.register(username, password);
+
+    if (user) {
+      req.session.username = user.username;
+      req.session.userid = user.id;
+      user = user.getData();
+    }
+    else {
+      message = 'Failed registration';
+    }
+  }
+
+  res.send({ user, message });
 });
 
 router.post('/pingUserSession', function(req, res, next){
-  res.send(UserController.getUser(req.session.userid));
+  var user = UserController.getUser(req.session.userid);
+  user = user? user.getData(): user;
+  var message = '';
+
+  res.send({ user, message });
 });
 
 router.post('/logout', Auth.isAuthenticated, function(req, res, next){
